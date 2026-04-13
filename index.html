@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Samiksha 💖</title>
+
+<style>
+
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+  font-family:Segoe UI;
+  background:black;
+  color:white;
+}
+
+.screen{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.hidden{display:none;}
+
+button{
+  padding:14px 25px;
+  border-radius:30px;
+  border:none;
+  background:linear-gradient(45deg,pink,cyan);
+  color:white;
+  margin-top:15px;
+}
+
+/* LOGIN */
+#login{
+  background:radial-gradient(circle,#000,#1a1a2f);
+}
+
+/* PROPOSAL CARD */
+#card img{
+  width:80vw;
+  border-radius:20px;
+  box-shadow:0 0 25px pink;
+}
+
+/* COUNTDOWN */
+#count{
+  font-size:22vw;
+  animation:zoom 0.8s infinite alternate;
+}
+
+@keyframes zoom{
+  from{transform:scale(1);}
+  to{transform:scale(1.3);}
+}
+
+/* PHOTO */
+#photo{
+  width:70vw;
+  height:70vw;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 0 20px pink;
+}
+
+/* FLASH */
+.flash{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:white;
+  animation:fade 0.5s;
+}
+
+@keyframes fade{
+  from{opacity:1;}
+  to{opacity:0;}
+}
+
+</style>
+</head>
+
+<body onclick="initMusic()">
+
+<!-- LOGIN -->
+<div id="login" class="screen">
+  <h1>🔐 SECRET ACCESS</h1>
+  <input id="pass" placeholder="Enter Password">
+  <button onclick="check()">Unlock</button>
+</div>
+
+<!-- PROPOSAL CARD -->
+<div id="card" class="screen hidden">
+
+  <h1>💌 Proposal Card Unlocked</h1>
+
+  <img src="proposal-card.jpg">
+
+  <button onclick="startCountdown()">Tap for Surprise 💖</button>
+
+</div>
+
+<!-- COUNTDOWN -->
+<div id="countScreen" class="screen hidden">
+  <h1 id="count">5</h1>
+</div>
+
+<!-- MAIN (Birthday Wish Section) -->
+<div id="main" class="screen hidden">
+
+  <h1>Happy Birthday Samiksha 💖</h1>
+
+  <img id="photo" src="photo1.jpg">
+
+  <button onclick="startStory()">Open Memory ✨</button>
+
+  <div id="msg"></div>
+</div>
+
+<!-- PROPOSAL -->
+<div id="proposal" class="screen hidden">
+
+  <p id="proposalText"></p>
+
+  <h1>Do you love me too? 💌</h1>
+
+  <button onclick="openFinal()">Yes 💖</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen hidden">
+  <p id="finalText"></p>
+</div>
+
+<!-- AUDIO -->
+<audio id="boom"><source src="boom.mp3"></audio>
+
+<script>
+
+let musicStarted=false;
+function initMusic(){
+  if(!musicStarted){
+    musicStarted=true;
+  }
+}
+
+/* PASSWORD */
+function check(){
+
+  let p=document.getElementById("pass").value.trim().toLowerCase();
+
+  if(p==="angry bird"){
+
+    document.getElementById("boom").play();
+
+    let flash=document.createElement("div");
+    flash.className="flash";
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(),500);
+
+    setTimeout(()=>{
+      document.getElementById("login").style.display="none";
+      document.getElementById("card").classList.remove("hidden");
+    },800);
+  }
+}
+
+/* COUNTDOWN FROM CARD */
+function startCountdown(){
+
+  document.getElementById("card").style.display="none";
+  document.getElementById("countScreen").classList.remove("hidden");
+
+  let c=5;
+
+  let x=setInterval(()=>{
+    c--;
+    document.getElementById("count").innerText=c;
+
+    if(c===0){
+      clearInterval(x);
+      document.getElementById("countScreen").style.display="none";
+      document.getElementById("main").classList.remove("hidden");
+    }
+  },1000);
+}
+
+/* PHOTO SLIDER */
+let photos=["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
+let i=0;
+
+setInterval(()=>{
+  let img=document.getElementById("photo");
+  img.style.opacity=0;
+
+  setTimeout(()=>{
+    i=(i+1)%photos.length;
+    img.src=photos[i];
+    img.style.opacity=1;
+  },500);
+
+},2500);
+
+/* YOUR EXACT BIRTHDAY WISH */
+let text=`Wishing you a very happy and joyful birthday 🎂💗
+May your life always be filled with happiness, love, and success.
+May all your dreams and wishes come true.
+It’s not just your birthday… it’s the day someone special like you came into this world and made my life better in many ways.
+You’ve become someone really special to me. Stay the same, my favourite Angry Bird 🐦❤️
+Once again, happy birthday to my special person 💗✨`;
+
+let j=0;
+
+function startStory(){
+
+  let box=document.getElementById("msg");
+
+  let t=setInterval(()=>{
+    box.innerHTML+=text.charAt(j);
+    j++;
+
+    if(j>=text.length){
+      clearInterval(t);
+
+      setTimeout(()=>{
+        document.getElementById("main").classList.add("hidden");
+        document.getElementById("proposal").classList.remove("hidden");
+        typeProposal();
+      },2500);
+    }
+  },40);
+}
+
+/* PROPOSAL MESSAGE */
+let proposalText=`I never planned this feeling...
+but you became someone I can't ignore 💖`;
+
+let p=0;
+
+function typeProposal(){
+  let box=document.getElementById("proposalText");
+
+  let t=setInterval(()=>{
+    box.innerHTML+=proposalText.charAt(p);
+    p++;
+    if(p>=proposalText.length) clearInterval(t);
+  },50);
+}
+
+/* FINAL + MAKHAMALI MUSIC START */
+function openFinal(){
+
+  document.getElementById("proposal").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
+
+  let m=new Audio("makhamali.mp3");
+  m.loop=true;
+  m.play();
+
+  typeFinal();
+}
+
+/* FINAL TEXT */
+let finalText=`No matter what happens...
+you will always be special to me 💖`;
+
+let k=0;
+
+function typeFinal(){
+
+  let box=document.getElementById("finalText");
+
+  let t=setInterval(()=>{
+    box.innerHTML+=finalText.charAt(k);
+    k++;
+    if(k>=finalText.length) clearInterval(t);
+  },50);
+}
+
+</script>
+
+</body>
+</html>
